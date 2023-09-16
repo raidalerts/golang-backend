@@ -1,0 +1,10 @@
+#debug: false
+alert_backlog_size: 200
+info_backlog_size: 5
+region_to_monitor: 1
+city_to_monitor: <CityName>
+analyzer_prompt: |
+  Prompt for ChatGPT with %s and %s replaced with <CityName>
+push_topic: raidalerts
+info_channel: <channel name>
+alert_channel: air_alert_ua

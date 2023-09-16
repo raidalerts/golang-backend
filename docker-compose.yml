@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS}
+    restart: always
+    volumes:
+      - ./settings.yml:/root/settings.yml:ro
+    command: settings.yml
