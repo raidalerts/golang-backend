@@ -1,6 +1,6 @@
 module raidalerts
 
-go 1.21.1
+go 1.18
 
 require (
 	firebase.google.com/go v3.13.0+incompatible

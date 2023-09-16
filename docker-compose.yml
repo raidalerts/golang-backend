@@ -1,13 +1,14 @@
 version: '3'
-
+name: raidalerts-be
 services:
   app:
     build:
       context: .
     environment:
       OPENAI_API_KEY: ${OPENAI_API_KEY}
-      GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS}
+      GOOGLE_APPLICATION_CREDENTIALS: /root/account.json
     restart: always
     volumes:
       - ./settings.yml:/root/settings.yml:ro
+      - ./account.json:/root/account.json:ro
     command: settings.yml

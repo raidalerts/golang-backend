@@ -1,7 +1,7 @@
 FROM golang:1.18-alpine AS builder
 
 RUN apk add ca-certificates alpine-sdk
-WORKDIR /go/src/github.com/and3rson/raid
+WORKDIR /go/src/raidalerts
 COPY go.mod go.sum ./
 RUN go mod download -x
 COPY cmd ./cmd

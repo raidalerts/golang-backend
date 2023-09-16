@@ -1,0 +1,43 @@
+- name: Create a projects dir
+  file:
+    path: /root/projects
+    state: directory
+    mode: '0755'
+- name: Clone the project from GitHub
+  git:
+    repo: 'https://github.com/raidalerts/golang-backend.git'
+    dest: /root/projects/raidalerts/golang-backend
+    version: master
+- name: Create a config directory
+  file:
+    path: /etc/raidalerts
+    state: directory
+    mode: '0755'
+- name: Copy settings file to remote
+  copy:
+    src: settings.yml
+    dest: /etc/raidalerts/settings.yml
+- name: Copy Firebase config to remote
+  copy:
+    src: account.json
+    dest: /etc/raidalerts/account.json
+- name: Run app service
+  docker_compose:
+    project_name: raidalerts-app
+    definition:
+      version: '3.3'
+      services:
+        app:
+          build:
+            context: /root/projects/raidalerts/golang-backend
+          environment:
+            OPENAI_API_KEY: "{{ openai_api_key }}"
+            GOOGLE_APPLICATION_CREDENTIALS: /root/account.json
+          restart: unless-stopped
+          volumes:
+            - /etc/raidalerts/settings.yml:/root/settings.yml:ro
+            - /etc/raidalerts/account.json:/root/account.json:ro
+          command: settings.yml
+  register: output
+- debug:
+    var: output
