@@ -51,7 +51,7 @@ func (self *AiAssistant) Run(ctx context.Context, wg *sync.WaitGroup, errch chan
 
 	defer wg.Done()
 	wg.Add(1)
-
+	log.Info("AiAssistant: waiting for updates")
 	events := self.infoUpdates.Subscribe("AiAssistant", func(u TgMessageUpdate) bool {
 		return u.IsFresh || u.IsLast
 	})

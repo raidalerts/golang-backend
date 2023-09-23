@@ -21,3 +21,5 @@
 *.json
 env.sh
 settings.yml
+inventory
+/ansible/roles/raidalerts-app/vars/*.yml
