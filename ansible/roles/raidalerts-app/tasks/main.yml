@@ -24,6 +24,8 @@
 - name: Run app service
   docker_compose:
     project_name: raidalerts-app
+    recreate: always
+    build: yes
     definition:
       version: '3.3'
       services:
