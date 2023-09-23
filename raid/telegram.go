@@ -144,6 +144,9 @@ func (c *ChannelClient) FetchMessages(ctx context.Context, before int64) ([]Mess
 	for _, node := range nodes {
 		authorNode := AuthorSel.MatchFirst(node)
 		textNodes := TextSel.MatchAll(node)
+		if len(textNodes) == 0 {
+			continue
+		}
 		textNode := textNodes[0]
 		if len(textNodes) > 1 {
 			textNode = textNodes[1]
