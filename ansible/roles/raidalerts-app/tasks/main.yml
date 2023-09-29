@@ -43,3 +43,6 @@
   register: output
 - debug:
     var: output
+- name: Prune dangling docker images
+  docker_prune:
+    images: yes
