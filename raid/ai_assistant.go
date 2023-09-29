@@ -27,7 +27,8 @@ type AiAssistant struct {
 type AiResponse struct {
     Alert   	bool      `json:"alert"`
     Attacker 	string 	  `json:"attacker"`
-	Text        string
+	Text        string	  `json:"trigger"`
+	Confidence  float32	  `json:"confidence"`
 }
 
 func delete_empty (s []string) []string {
