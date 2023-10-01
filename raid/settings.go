@@ -10,18 +10,32 @@ import (
 )
 
 type Settings struct {
-	AlertChannel 		string         `env:"ALERT_CHANNEL" yaml:"alert_channel"`
-	InfoChannel			string		   `env:"INFO_CHANNEL" yaml:"info_channel"`
-	TimezoneName    	string         `env:"TZ" envDefault:"Europe/Kiev" yaml:"timezone_name"`
-	Timezone        	*time.Location ``
-	Debug           	bool           `env:"DEBUG" envDefault:"false" yaml:"debug"`
-	Trace           	bool           `env:"TRACE" envDefault:"false" yaml:"trace"`
-	AlertBacklogSize    int            `env:"ALERT_BACKLOG_SIZE" envDefault:"50" yaml:"alert_backlog_size"`
-	InfoBacklogSize     int            `env:"INFO_BACKLOG_SIZE" envDefault:"5" yaml:"info_backlog_size"`
-	RegionToMonitor		int			   `env:"REGION_TO_MONITOR" yaml:"region_to_monitor"`
-	CityToMonitor		string		   `env:"CITY_TO_MONITOR" yaml:"city_to_monitor"`
-	AnalyzerPrompt		string		   `yaml:"analyzer_prompt"`
-	Topic				string		   `yaml:"push_topic"`
+	AlertChannel     string          `env:"ALERT_CHANNEL" yaml:"alert_channel"`
+	InfoChannel      string          `env:"INFO_CHANNEL" yaml:"info_channel"`
+	TimezoneName     string          `env:"TZ" envDefault:"Europe/Kiev" yaml:"timezone_name"`
+	Timezone         *time.Location  ``
+	Debug            bool            `env:"DEBUG" envDefault:"false" yaml:"debug"`
+	Trace            bool            `env:"TRACE" envDefault:"false" yaml:"trace"`
+	AlertBacklogSize int             `env:"ALERT_BACKLOG_SIZE" envDefault:"50" yaml:"alert_backlog_size"`
+	InfoBacklogSize  int             `env:"INFO_BACKLOG_SIZE" envDefault:"5" yaml:"info_backlog_size"`
+	RegionToMonitor  int             `env:"REGION_TO_MONITOR" yaml:"region_to_monitor"`
+	CityToMonitor    string          `env:"CITY_TO_MONITOR" yaml:"city_to_monitor"`
+	AnalyzerPrompt   string          `yaml:"analyzer_prompt"`
+	Topic            string          `yaml:"push_topic"`
+	Webhooks         []WebhookConfig `yaml:"webhooks,flow"`
+}
+
+type WebhookConfig struct {
+	Name      string                 `yaml:"name"`
+	Method    string                 `yaml:"method"`
+	Url       string                 `yaml:"url"`
+	QueryArgs []QueryArg             `yaml:"query_args,flow"`
+	Payload   map[string]interface{} `yaml:"payload"`
+}
+
+type QueryArg struct {
+	Name  string `yaml:"name"`
+	Value string `yaml:"value"`
 }
 
 func MustLoadSettings() (settings Settings) {

@@ -37,10 +37,13 @@ func main() {
 
 	aiMonitor := raid.NewAiAssistant(alertMonitorState, tgMonitor.Updates, settings.RegionToMonitor, 
 		settings.CityToMonitor, settings.AnalyzerPrompt, notificator)
+	
+	webhooksHandler := raid.NewWebhooksHandler(settings.Webhooks, aiMonitor.Updates)
 
 	go alertMonitor.Run(ctx, wg, errch)
 	go aiMonitor.Run(ctx, wg, errch)
 	go tgMonitor.Run(ctx, wg, errch)
+	go webhooksHandler.Run(ctx, wg, errch)
 
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)

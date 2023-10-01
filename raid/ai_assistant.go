@@ -18,31 +18,32 @@ type AiAssistant struct {
 	infoUpdates       *Topic[TgMessageUpdate]
 	regionToMonitor   int
 	aiClient          openai.Client
-	cityToMonitor string
-	prompt string
-	Updates         *Topic[AiResponse]
-	notificator *PushNotificator
+	cityToMonitor     string
+	prompt            string
+	Updates           *Topic[AiResponse]
+	notificator       *PushNotificator
 }
 
 type AiResponse struct {
-    Alert   	bool      `json:"alert"`
-    Attacker 	string 	  `json:"attacker"`
-	Text        string	  `json:"trigger"`
-	Confidence  float32	  `json:"confidence"`
+	Alert        bool    `json:"alert"`
+	Attacker     string  `json:"attacker"`
+	Text         string  `json:"trigger"`
+	Confidence   float32 `json:"confidence"`
+	OriginalText string  `json:"original_text"`
 }
 
-func delete_empty (s []string) []string {
-    var r []string
-    for _, str := range s {
-        if str != "" {
-            r = append(r, str)
-        }
-    }
-    return r
+func delete_empty(s []string) []string {
+	var r []string
+	for _, str := range s {
+		if str != "" {
+			r = append(r, str)
+		}
+	}
+	return r
 }
 
-func NewAiAssistant(alertMonitorState *AlertMonitorState, infoUpdates *Topic[TgMessageUpdate], 
-		regionToMonitor int, cityToMonitor string, prompt string, notificator *PushNotificator) *AiAssistant {
+func NewAiAssistant(alertMonitorState *AlertMonitorState, infoUpdates *Topic[TgMessageUpdate],
+	regionToMonitor int, cityToMonitor string, prompt string, notificator *PushNotificator) *AiAssistant {
 	aiClient := openai.NewClient(os.Getenv("OPENAI_API_KEY"))
 	return &AiAssistant{alertMonitorState, infoUpdates, regionToMonitor, *aiClient, cityToMonitor, prompt, NewTopic[AiResponse](), notificator}
 }
@@ -87,7 +88,7 @@ func (self *AiAssistant) Run(ctx context.Context, wg *sync.WaitGroup, errch chan
 					Model: openai.GPT3Dot5Turbo0613,
 					Messages: []openai.ChatCompletionMessage{
 						{
-							Role: openai.ChatMessageRoleSystem,
+							Role:    openai.ChatMessageRoleSystem,
 							Content: fmt.Sprintf(self.prompt, self.cityToMonitor, self.cityToMonitor),
 						},
 					},
@@ -102,7 +103,7 @@ func (self *AiAssistant) Run(ctx context.Context, wg *sync.WaitGroup, errch chan
 					continue
 				}
 
-				aiResponse := &AiResponse{Text: msgText}
+				aiResponse := &AiResponse{Text: msgText, OriginalText: msgText}
 				if err := json.Unmarshal([]byte(resp.Choices[0].Message.Content), &aiResponse); err != nil {
 					errch <- fmt.Errorf("AiAssistant: failed to parse AI output: %v", err)
 					continue
