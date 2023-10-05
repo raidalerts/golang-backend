@@ -29,15 +29,15 @@ func main() {
 	notificator := raid.NewPushNotificator(settings.Topic)
 
 	alertMonitorState := &raid.AlertMonitorState{}
-	alertMonitor := raid.NewAlertMonitor(settings.AlertChannel, settings.Timezone, settings.AlertBacklogSize, 
+	alertMonitor := raid.NewAlertMonitor(settings.AlertChannel, settings.Timezone, settings.AlertBacklogSize,
 		alertMonitorState, settings.RegionToMonitor)
 
 	tgMonitorState := &raid.TgChannelMonitorState{}
 	tgMonitor := raid.NewTgChannelMonitor(settings.InfoChannel, settings.Timezone, settings.InfoBacklogSize, tgMonitorState)
 
-	aiMonitor := raid.NewAiAssistant(alertMonitorState, tgMonitor.Updates, settings.RegionToMonitor, 
+	aiMonitor := raid.NewAiAssistant(alertMonitorState, tgMonitor.Updates, settings.RegionToMonitor,
 		settings.CityToMonitor, settings.AnalyzerPrompt, notificator)
-	
+
 	webhooksHandler := raid.NewWebhooksHandler(settings.Webhooks, aiMonitor.Updates)
 
 	go alertMonitor.Run(ctx, wg, errch)
