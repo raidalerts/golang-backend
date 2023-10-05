@@ -92,6 +92,7 @@ func (self *AiAssistant) Run(ctx context.Context, wg *sync.WaitGroup, errch chan
 							Content: fmt.Sprintf(self.prompt, self.cityToMonitor, self.cityToMonitor),
 						},
 					},
+					Temperature: 0.1,
 				}
 				req.Messages = append(req.Messages, openai.ChatCompletionMessage{
 					Role:    openai.ChatMessageRoleUser,
