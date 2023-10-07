@@ -28,7 +28,7 @@ type AiResponse struct {
 	Alert        bool    `json:"alert"`
 	Attacker     string  `json:"attacker"`
 	Text         string  `json:"trigger"`
-	Confidence   float32 `json:"confidence"`
+	Confidence   float32 `json:"risk"`
 	OriginalText string  `json:"original_text"`
 }
 
