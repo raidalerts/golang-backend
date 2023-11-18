@@ -85,7 +85,7 @@ func (self *AiAssistant) Run(ctx context.Context, wg *sync.WaitGroup, errch chan
 				wait = time.After(5 * time.Second)
 				log.Infof("AiAssistant: received tg message:\n%s\n", msgText)
 				req := openai.ChatCompletionRequest{
-					Model: openai.GPT3Dot5Turbo0613,
+					Model: "gpt-3.5-turbo-1106",
 					Messages: []openai.ChatCompletionMessage{
 						{
 							Role:    openai.ChatMessageRoleSystem,
