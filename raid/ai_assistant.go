@@ -85,14 +85,14 @@ func (self *AiAssistant) Run(ctx context.Context, wg *sync.WaitGroup, errch chan
 				wait = time.After(5 * time.Second)
 				log.Infof("AiAssistant: received tg message:\n%s\n", msgText)
 				req := openai.ChatCompletionRequest{
-					Model: "gpt-3.5-turbo-1106",
+					Model: openai.GPT3Dot5Turbo,
 					Messages: []openai.ChatCompletionMessage{
 						{
 							Role:    openai.ChatMessageRoleSystem,
 							Content: fmt.Sprintf(self.prompt, self.cityToMonitor, self.cityToMonitor),
 						},
 					},
-					Temperature: 0.1,
+					Temperature: 0.01,
 				}
 				req.Messages = append(req.Messages, openai.ChatCompletionMessage{
 					Role:    openai.ChatMessageRoleUser,
